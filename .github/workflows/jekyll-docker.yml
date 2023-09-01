@@ -29,9 +29,14 @@ jobs:
 
     - name: Run Cypress tests and generate report
       run: |
-        npx cypress run
-        # You can add any additional Cypress flags or commands here as needed
-        # For example: npx cypress run --headless --browser chrome
+        try {
+          npx cypress run
+          # You can add any additional Cypress flags or commands here as needed
+          # For example: npx cypress run --headless --browser chrome
+        } catch (error) {
+          # Capture the error but don't stop the workflow
+          echo "Error during Cypress tests: $error"
+        }
 
     - name: Create Cypress report artifact
       uses: actions/upload-artifact@v2

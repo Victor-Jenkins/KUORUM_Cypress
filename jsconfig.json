@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "allowJs": true,
+      "baseUrl": ".",
+      "paths": {
+        "@pages/*": [
+          "./cypress/pages/*"
+        ]
+      },
+      "types": ["@shelex/cypress-allure-plugin"],
+   
+    }
+  }
+  

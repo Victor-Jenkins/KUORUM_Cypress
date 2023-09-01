@@ -12,7 +12,7 @@ passed_percent=$((passed * 100 / total))
 failed_percent=$((failed * 100 / total))
 skipped_percent=$((skipped * 100 / total))
 
-# Generar informe HTML sin el bloque del gráfico de líneas
+# Generar informe HTML
 cat <<EOF >cypress-report.html
 <!DOCTYPE html>
 <html>
@@ -20,7 +20,6 @@ cat <<EOF >cypress-report.html
 <style>
   body {
     font-family: Arial, sans-serif;
-    margin: 20px;
     background-color: #2a2a2a;
     color: white;
   }
@@ -42,6 +41,13 @@ cat <<EOF >cypress-report.html
     border: none;
     color: white;
   }
+  .chart-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  canvas {
+    background-color: #1a1a1a;
+  }
 </style>
 </head>
 <body>
@@ -53,6 +59,34 @@ cat <<EOF >cypress-report.html
 $(cat cypress-logs.txt | sed 's/\x1B\[[0-9;]*[JKmsu]//g')
   </pre>
 </div>
+<div class='chart-container'>
+  <canvas id='chart'></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const passedPercent = ${passed_percent};
+const failedPercent = ${failed_percent};
+
+const ctx = document.getElementById('chart').getContext('2d');
+
+new Chart(ctx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Passed', 'Failed'],
+    datasets: [{
+      data: [passedPercent, failedPercent],
+      backgroundColor: ['#36A2EB', '#FF6384'],
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Test Results',
+      fontSize: 16,
+    }
+  }
+});
+</script>
 </body>
 </html>
 EOF

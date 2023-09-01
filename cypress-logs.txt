@@ -18,10 +18,10 @@
 
 
   Visit and search in https://www.kuorum.org/clientes-feed and put a fail email
-    ✓ Success search (12215ms)
+    ✓ Success search (12083ms)
 
 
-  1 passing (15s)
+  1 passing (16s)
 
 
   (Results)
@@ -42,7 +42,7 @@
   (Video)
 
   -  Started compressing: Compressing to 32 CRF                                                     
-  -  Finished compressing: 3 seconds                                                 
+  -  Finished compressing: 4 seconds                                                 
 
   -  Video output: /home/victor/Escritorio/KUORUM_Cypress/cypress/videos/Kuorum.feature.mp4
 
@@ -53,7 +53,7 @@
 
 
   Kuorum Clients
-    ✓ Type personal data like a client (4522ms)
+    ✓ Type personal data like a client (4514ms)
 
 
   1 passing (9s)
@@ -77,7 +77,7 @@
   (Video)
 
   -  Started compressing: Compressing to 32 CRF                                                     
-  -  Finished compressing: 2 seconds                                                 
+  -  Finished compressing: 1 second                                                  
 
   -  Video output: /home/victor/Escritorio/KUORUM_Cypress/cypress/videos/Prices.feature.mp4
 

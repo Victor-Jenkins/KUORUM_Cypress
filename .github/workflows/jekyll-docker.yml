@@ -1,0 +1,47 @@
+name: Jekyll site CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+
+    - name: Install Cypress
+      run: npm install cypress
+
+    - name: Build the site in the jekyll/builder container
+      run: |
+        docker run \
+        -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
+        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
+
+    - name: Run Cypress tests and generate report
+      run: |
+        npx cypress run
+        # You can add any additional Cypress flags or commands here as needed
+        # For example: npx cypress run --headless --browser chrome
+
+    - name: Create Cypress report artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: cypress-report
+        path: cypress/screenshots # Adjust the path to your Cypress report directory
+
+    - name: Create Jekyll site artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: jekyll-site
+        path: _site
+

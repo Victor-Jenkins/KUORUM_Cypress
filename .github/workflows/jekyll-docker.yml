@@ -18,25 +18,17 @@ jobs:
       with:
         node-version: 14
 
-    - name: Install Cypress and other dependencies
-      run: |
-        npm install cypress
-        npm install allure-reporter cucumber-html-report --save-dev
+    - name: Install Cypress
+      run: npm install cypress
 
     - name: Build the site in the jekyll/builder container
       run: |
         docker run \
         -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
         jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
-
-    - name: Run Cypress tests
+    - name: Run Cypress tests and generate report
       run: |
         npx cypress run || echo "Error during Cypress tests"
-
-    - name: Generate Cucumber HTML report
-      run: |
-        npx cucumber-html-reporter --json cypress/results/output.json --output cypress/results/cucumber-report.html
-
     - name: Create Cypress report artifact
       uses: actions/upload-artifact@v2
       with:
@@ -48,5 +40,5 @@ jobs:
       with:
         name: jekyll-site
         path: _site
-
+        
         

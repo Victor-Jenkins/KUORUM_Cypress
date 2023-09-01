@@ -27,9 +27,26 @@ jobs:
         -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
         jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
 
-    - name: Run Cypress tests and generate report
+    - name: Run Cypress tests and generate JSON output
       run: |
-        npx cypress run || echo "Error during Cypress tests"
+        npx cypress run --json output.json || echo "Error during Cypress tests"
+
+    - name: Generate Cypress summary report
+      id: summary
+      run: |
+        passed=$(cat output.json | jq -r '.totalTests - .totalFailed')
+        failed=$(cat output.json | jq -r '.totalFailed')
+        skipped=$(cat output.json | jq -r '.totalSkipped')
+        pending=$(cat output.json | jq -r '.totalPending')
+        
+        echo "<html><body><h1>Resumen de Pruebas Cypress</h1>" > summary-report.html
+        echo "<p>Pass: $passed</p>" >> summary-report.html
+        echo "<p>Fail: $failed</p>" >> summary-report.html
+        echo "<p>Skip: $skipped</p>" >> summary-report.html
+        echo "<p>Pending: $pending</p>" >> summary-report.html
+        echo "</body></html>" >> summary-report.html
+
+      shell: bash
 
     - name: Create Cypress report artifact
       uses: actions/upload-artifact@v2
@@ -37,8 +54,9 @@ jobs:
         name: cypress-report
         path: cypress/screenshots # Adjust the path to your Cypress report directory
 
-    - name: Create Jekyll site artifact
+    - name: Create Cypress summary report artifact
       uses: actions/upload-artifact@v2
       with:
-        name: jekyll-site
-        path: _site
+        name: cypress-summary-report
+        path: summary-report.html
+

@@ -26,19 +26,29 @@ jobs:
         docker run \
         -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
         jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
+
     - name: Run Cypress tests and generate report
       run: |
         npx cypress run || echo "Error during Cypress tests"
+
+    - name: Generate Cypress report
+      run: |
+        bash generate-cypress-report.sh
+      working-directory: ${{ github.workspace }} # Set the working directory to your project root
+
+    - name: Show Cypress report content
+      run: |
+        cat cypress/reports/cypress-report.html
+      if: always() # Este paso siempre se ejecutará
+
     - name: Create Cypress report artifact
       uses: actions/upload-artifact@v2
       with:
-        name: cypress-report
-        path: cypress/screenshots # Adjust the path to your Cypress report directory
+        name: cypress-html-report
+        path: cypress/reports/cypress-report.html # Ruta al informe HTML generado
 
     - name: Create Jekyll site artifact
       uses: actions/upload-artifact@v2
       with:
         name: jekyll-site
         path: _site
-        
-        

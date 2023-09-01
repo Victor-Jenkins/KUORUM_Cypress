@@ -27,36 +27,41 @@ jobs:
         -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
         jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
 
-    - name: Run Cypress tests and generate JSON output
+    - name: Run Cypress tests and generate Allure report
       run: |
-        npx cypress run --json output.json || echo "Error during Cypress tests"
+        npx cypress run --reporter allure --reporter-options "resultsDir=cypress/allure-results"
+      working-directory: ${{ github.workspace }}
 
-    - name: Generate Cypress summary report
-      id: summary
+    - name: Create Allure report artifact
       run: |
-        passed=$(cat output.json | jq -r '.totalTests - .totalFailed')
-        failed=$(cat output.json | jq -r '.totalFailed')
-        skipped=$(cat output.json | jq -r '.totalSkipped')
-        pending=$(cat output.json | jq -r '.totalPending')
+        allure generate cypress/allure-results --clean -o cypress/allure-report
+        cd cypress
+        zip -r allure-report.zip allure-report
+      working-directory: ${{ github.workspace }}
+
+    - name: Upload Allure report as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: allure-report
+        path: cypress/allure-report.zip
+
+    - name: Generate Cucumber HTML Report
+      run: |
+        npm install cucumber-html-report
+        npx cucumber-html-report -o cypress/cucumber-report/cucumber.html -i cypress/cucumber-report/cucumber.json
+      working-directory: ${{ github.workspace }}
+
+    - name: Create Cucumber HTML Report artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: cucumber-html-report
+        path: cypress/cucumber-report/cucumber.html
+
+    - name: Create Jekyll site artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: jekyll-site
+        path: _site
+
         
-        echo "<html><body><h1>Resumen de Pruebas Cypress</h1>" > summary-report.html
-        echo "<p>Pass: $passed</p>" >> summary-report.html
-        echo "<p>Fail: $failed</p>" >> summary-report.html
-        echo "<p>Skip: $skipped</p>" >> summary-report.html
-        echo "<p>Pending: $pending</p>" >> summary-report.html
-        echo "</body></html>" >> summary-report.html
-
-      shell: bash
-
-    - name: Create Cypress report artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: cypress-report
-        path: cypress/screenshots # Adjust the path to your Cypress report directory
-
-    - name: Create Cypress summary report artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: cypress-summary-report
-        path: summary-report.html
-
+        

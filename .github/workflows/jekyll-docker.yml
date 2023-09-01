@@ -33,7 +33,7 @@ jobs:
 
     - name: Generate Cypress report
       run: |
-        bash generate-cypress-report.sh
+        bash generate-report.sh
       working-directory: ${{ github.workspace }} # Set the working directory to your project root
 
     - name: Show Cypress report content

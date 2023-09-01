@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #2a2a2a;
+    color: white;
+  }
+  .header {
+    padding: 20px;
+    background-color: #1a1a1a;
+    text-align: center;
+  }
+  .report-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  .log-container {
+    background-color: #1a1a1a;
+    padding: 20px;
+  }
+  pre {
+    background-color: #1a1a1a;
+    border: none;
+    color: white;
+  }
+</style>
+</head>
+<body>
+<div class='header'>
+  <h1 class='report-title'>Cypress Test Report</h1>
+</div>
+<div class='log-container'>
+  <pre>
+
+================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        12.17.4                                                                        │
+  │ Browser:        Electron 106 (headless)                                                        │
+  │ Node Version:   v20.5.0 (/home/linuxbrew/.linuxbrew/Cellar/node/20.5.0/bin/node)               │
+  │ Specs:          2 found (Kuorum.feature, Prices.feature)                                       │
+  │ Searched:       cypress/e2e/*.feature                                                          │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  Kuorum.feature                                                                  (1 of 2)
+
+
+  Visit and search in https://www.kuorum.org/clientes-feed and put a fail email
+    ✓ Success search (12215ms)
+
+
+  1 passing (15s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        1                                                                                │
+  │ Passing:      1                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        true                                                                             │
+  │ Duration:     15 seconds                                                                       │
+  │ Spec Ran:     Kuorum.feature                                                                   │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Video)
+
+  -  Started compressing: Compressing to 32 CRF                                                     
+  -  Finished compressing: 3 seconds                                                 
+
+  -  Video output: /home/victor/Escritorio/KUORUM_Cypress/cypress/videos/Kuorum.feature.mp4
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  Prices.feature                                                                  (2 of 2)
+
+
+  Kuorum Clients
+    ✓ Type personal data like a client (4522ms)
+
+
+  1 passing (9s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        1                                                                                │
+  │ Passing:      1                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        true                                                                             │
+  │ Duration:     8 seconds                                                                        │
+  │ Spec Ran:     Prices.feature                                                                   │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Video)
+
+  -  Started compressing: Compressing to 32 CRF                                                     
+  -  Finished compressing: 2 seconds                                                 
+
+  -  Video output: /home/victor/Escritorio/KUORUM_Cypress/cypress/videos/Prices.feature.mp4
+
+
+================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✔  Kuorum.feature                           00:15        1        1        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  Prices.feature                           00:08        1        1        -        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✔  All specs passed!                        00:24        2        2        -        -        -  
+  </pre>
+</div>
+</body>
+</html>

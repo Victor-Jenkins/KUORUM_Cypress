@@ -33,17 +33,6 @@ jobs:
         # Genera el informe HTML en el directorio de Cypress
         ./generate-report.sh
 
-    - name: Create Cypress report artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: cypress-report
-        path: cypress/screenshots # Ajusta la ruta al directorio de tu informe Cypress
-
-    - name: Create Jekyll site artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: jekyll-site
-        path: _site
 
     - name: Create HTML report artifact
       uses: actions/upload-artifact@v2

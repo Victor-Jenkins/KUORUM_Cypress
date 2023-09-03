@@ -1,29 +1,43 @@
-name: End-to-end tests
-on: [push]
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
-      # after the test run completes
-      # store videos and any screenshots
-      # NOTE: screenshots will be generated only if E2E test failed
-      # thus we store screenshots only on failures
-      # Alternative: create and commit an empty cypress/screenshots folder
-      # to always have something to upload
-      - uses: actions/upload-artifact@v3
-        if: failure()
+
+      # Instala las dependencias de NPM
+      - name: Install Dependencies
+        run: npm install
+
+      # Ejecuta las pruebas Cypress y genera el informe
+      - name: Cypress Run
+        run: npx cypress run
+
+      # Genera el informe de Cucumber HTML
+      - name: Generate Cucumber HTML Report
+        run: node cucumber-html-report.js
+
+      # Configura el entorno para la acción gh-pages
+      - name: Set up Node
+        uses: actions/setup-node@v2
         with:
-          name: cypress-screenshots
-          path: cypress/screenshots
-      # Test run video was always captured, so this action uses "always()" condition
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: cypress-videos
-          path: cypress/videos
+          node-version: 18  # Puedes ajustar la versión de Node según tus requisitos
+
+      # Publica el informe en la rama gh-pages utilizando la acción específica
+      - name: Deploy to GitHub Pages
+        run: |
+          # Ejemplo: Utiliza la acción peaceiris/actions-gh-pages
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git checkout -b gh-pages
+          git add .
+          git commit -m "Deploy Cucumber report"
+          git push -f origin gh-pages
+
+
+
